@@ -3,6 +3,9 @@
 ;; No line numbers
 (setq doom-line-numbers-style nil)
 
+;; (setq doom-theme 'doom-one-light)
+;; (setq doom-theme 'doom-tomorrow-night)
+
 (setq doom-font
       (font-spec :family "Inziu Iosevka Slab J"
                  :size 12))
