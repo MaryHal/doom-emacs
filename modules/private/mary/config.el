@@ -16,6 +16,10 @@
       (font-spec :family "Noto Sans Mono CJK JP"
                  :size 12))
 
+(after! ivy
+  (setq ivy-count-format "%d/%d ")
+  (setq ivy-format-function 'ivy-format-function-arrow))
+
 (when (featurep! :feature evil)
   (load! +bindings)  ; my key bindings
   (load! +commands)) ; my custom ex commands
