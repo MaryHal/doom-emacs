@@ -19,6 +19,9 @@
       (font-spec :family "Noto Sans Mono CJK JP"
                  :size 12))
 
+(setq-default frame-title-format '("Emacs"))
+(setq +doom-dashboard-widgets '(shortmenu loaded))
+
 (after! ivy
   (setq ivy-count-format "%d/%d ")
   (setq ivy-format-function 'ivy-format-function-arrow))
