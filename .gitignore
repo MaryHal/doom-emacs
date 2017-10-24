@@ -24,3 +24,5 @@ network-security.data
 # transient files
 *.cache-*
 *.log
+/.persistent-scratch
+/cache/amx-items
