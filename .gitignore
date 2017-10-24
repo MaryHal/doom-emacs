@@ -25,4 +25,4 @@ network-security.data
 *.cache-*
 *.log
 /.persistent-scratch
-/cache/amx-items
+/cache/
