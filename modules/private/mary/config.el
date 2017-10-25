@@ -1,5 +1,8 @@
 ;;; private/mary/config.el -*- lexical-binding: t; -*-
 
+(when (string= system-type "windows-nt")
+  (set-selection-coding-system 'utf-16-le))
+
 ;; No line numbers
 (setq doom-line-numbers-style nil)
 
