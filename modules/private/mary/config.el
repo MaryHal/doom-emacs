@@ -26,23 +26,24 @@
 (setq +doom-dashboard-widgets '(shortmenu loaded))
 
 (after! ivy
-  (setq ivy-count-format "%d/%d ")
+  (setq ivy-count-format "  %d/%d ")
   (setq ivy-format-function 'ivy-format-function-arrow))
 
 (after! flyspell
-  ((executable-find "hunspell")
-   (setq-default ispell-program-name "hunspell")
-   (setq-default ispell-local-dictionary "en_US")
-   (setq-default ispell-local-dictionary-alist
-                 ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
-                 ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
-                 '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
-                   )))
+  (cond
+   ((executable-find "hunspell")
+    (setq-default ispell-program-name "hunspell")
+    (setq-default ispell-local-dictionary "en_US")
+    (setq-default ispell-local-dictionary-alist
+                  ;; Please note the list `("-d" "en_US")` contains ACTUAL parameters passed to hunspell
+                  ;; You could use `("-d" "en_US,en_US-med")` to check with multiple dictionaries
+                  '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
+                    )))
 
-  ((executable-find "aspell")
-   (setq-default ispell-program-name "aspell")
-   ;; Please note ispell-extra-args contains ACTUAL parameters passed to aspell
-   (setq-default ispell-extra-args '("--sug-mode=ultra" "--lang=en_US")))
+   ((executable-find "aspell")
+    (setq-default ispell-program-name "aspell")
+    ;; Please note ispell-extra-args contains ACTUAL parameters passed to aspell
+    (setq-default ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))))
 
   ;; On windows, append .exe suffix
   (when (and (string= system-type "windows-nt")
