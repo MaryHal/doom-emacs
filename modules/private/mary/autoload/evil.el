@@ -34,3 +34,11 @@
 buffers."
   (interactive "<a>")
   (doom/kill-matching-buffers pattern bang))
+
+
+(evil-define-operator +mary:join-previous-line (beg end)
+  "Join the previous line with the current line."
+  :motion evil-line
+  ;; (evil-previous-visual-line)
+  ;; (evil-join beg end)
+  (join-line))

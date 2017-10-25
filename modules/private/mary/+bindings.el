@@ -69,6 +69,7 @@
  :en "C-j"    #'evil-window-down
  :en "C-k"    #'evil-window-up
  :en "C-l"    #'evil-window-right
+ :n  "K"      #'+mary:join-previous-line
 
  (:prefix "C-x"
    "p" #'doom/other-popup)
@@ -594,7 +595,7 @@
  :n  "!"  #'rotate-text
 
  ;; smart-forward
- :nv "K"  #'smart-up
+ ;; :nv "K"  #'smart-up
  :m  "g]" #'smart-forward
  :m  "g[" #'smart-backward
 
