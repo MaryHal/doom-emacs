@@ -307,7 +307,7 @@ buffer where knowing the current project directory is important."
              "file-directory"
              :face face
              :v-adjust -0.05
-             :height 1.25)
+             :height 1.0)
             (propertize (concat " " (abbreviate-file-name default-directory))
                         'face face))))
 
