@@ -54,6 +54,8 @@
              (not (s-suffix? ".exe" ispell-program-name)))
     (setq-default ispell-program-name (concat ispell-program-name ".exe"))))
 
+(after! all-the-icons
+  (setq inhibit-compacting-font-caches t))
 
 (when (featurep! :feature evil)
   (load! +bindings)  ; my key bindings
