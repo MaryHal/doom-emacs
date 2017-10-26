@@ -26,7 +26,14 @@
       (font-spec :family "Noto Sans Mono CJK JP"
                  :size 12))
 
-(setq-default frame-title-format '("Emacs"))
+(after! doom-modeline
+  ;; De-bold some icons in doom-modeline
+  (set-face-attribute 'doom-modeline-info            nil :weight 'normal)
+  (set-face-attribute 'doom-modeline-buffer-modified nil :weight 'normal)
+  (set-face-attribute 'doom-modeline-warning         nil :weight 'normal)
+  (set-face-attribute 'doom-modeline-urgent          nil :weight 'normal))
+
+(setq-default frame-title-format '("%b - Emacs"))
 (setq +doom-dashboard-widgets '(shortmenu loaded))
 
 (after! ivy
