@@ -69,7 +69,7 @@
  :en "C-j"    #'evil-window-down
  :en "C-k"    #'evil-window-up
  :en "C-l"    #'evil-window-right
- :n  "K"      #'+mary:join-previous-line
+ :n  "K"      #'join-line
 
  (:prefix "C-x"
    "p" #'doom/other-popup)
