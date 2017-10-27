@@ -1,40 +1,11 @@
 ;;; private/mary/config.el -*- lexical-binding: t; -*-
 
-(when (string= system-type "windows-nt")
-  (set-selection-coding-system 'utf-16-le))
-
-;; No line numbers
-(setq doom-line-numbers-style nil)
-
-;; (setq doom-theme 'doom-molokai)
-;; (setq doom-theme 'doom-nova)
-;; (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-one-light)
-(setq doom-theme 'doom-tomorrow-night)
-;; (setq doom-theme 'doom-vibrant)
-
-(setq doom-font
-      (font-spec :family "Inziu Iosevka Slab J"
-                 :size 12))
-(setq doom-big-font
-      (font-spec :family "Inziu Iosevka Slab J"
-                 :size 18))
-(setq doom-variable-pitch-font
-      (font-spec :family "Inziu Roboto J"
-                 :size 12))
-(setq doom-unicode-font
-      (font-spec :family "Noto Sans Mono CJK JP"
-                 :size 12))
-
 (after! doom-modeline
   ;; De-bold some icons in doom-modeline
   (set-face-attribute 'doom-modeline-info            nil :weight 'normal)
   (set-face-attribute 'doom-modeline-buffer-modified nil :weight 'normal)
   (set-face-attribute 'doom-modeline-warning         nil :weight 'normal)
   (set-face-attribute 'doom-modeline-urgent          nil :weight 'normal))
-
-(setq-default frame-title-format '("%b - Emacs"))
-(setq +doom-dashboard-widgets '(shortmenu loaded))
 
 (after! ivy
   (setq ivy-count-format "  %d/%d ")
@@ -63,6 +34,9 @@
 
 (after! all-the-icons
   (setq inhibit-compacting-font-caches t))
+
+(after! company
+  (setq company-idle-delay 0.2))
 
 (when (featurep! :feature evil)
   (load! +bindings)  ; my key bindings

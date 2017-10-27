@@ -27,6 +27,7 @@
 ;;
 ;;; License: MIT
 
+(setq user-login-name "mary")
 (require 'core (concat user-emacs-directory "core/core"))
 
 (doom! :feature
@@ -131,5 +132,6 @@
        twitter           ; twitter client https://twitter.com/vnought
        write             ; emacs as a word processor (latex + org + markdown)
 
-       :private mary)
+       ;; :private mary
+       )
 
