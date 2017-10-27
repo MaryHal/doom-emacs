@@ -36,7 +36,11 @@
   (setq inhibit-compacting-font-caches t))
 
 (after! company
-  (setq company-idle-delay 0.2))
+  (setq company-idle-delay 0
+        company-minimum-prefix-length 2
+        company-show-numbers nil
+        company-require-match 'never
+        company-selection-wrap-around t))
 
 (when (featurep! :feature evil)
   (load! +bindings)  ; my key bindings

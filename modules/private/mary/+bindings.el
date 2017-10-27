@@ -260,6 +260,9 @@
      :desc "Browse project"          :n  "." (find-file-in! (doom-project-root))
      :desc "Find file in project"    :n  "/" #'projectile-find-file
      :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
+     :desc "Find file in project"    :n  "c" #'projectile-compile-project
+     :desc "Find file in project"    :n  "u" #'projectile-test-project
+     :desc "Find file in project"    :n  "f" #'projectile-find-file
      :desc "Switch project"          :n  "p" #'projectile-switch-project
      :desc "Recent project files"    :n  "r" #'projectile-recentf
      :desc "Search project"          :n  "s" #'counsel-projectile-rg
