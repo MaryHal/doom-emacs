@@ -69,7 +69,12 @@
  :en "C-j"    #'evil-window-down
  :en "C-k"    #'evil-window-up
  :en "C-l"    #'evil-window-right
+ ;; Other
  :n  "K"      #'join-line
+
+ (:after anzu
+   "M-%"   #'anzu-query-replace
+   "C-M-%" #'anzu-query-replace-regexp)
 
  (:prefix "C-x"
    "p" #'doom/other-popup)
@@ -265,7 +270,10 @@
      :desc "Find file in project"    :n  "f" #'projectile-find-file
      :desc "Switch project"          :n  "p" #'projectile-switch-project
      :desc "Recent project files"    :n  "r" #'projectile-recentf
-     :desc "Search project"          :n  "s" #'counsel-projectile-rg
+     (:desc "Search project" :prefix "s"
+       :desc "rg" :n "r" #'counsel-projectile-rg
+       :desc "ag" :n "a" #'counsel-projectile-ag
+       :desc "g"  :n "g" #'projectile-grep)
      :desc "List project tasks"      :n  "t" #'+ivy/tasks
      :desc "Pop term in project"     :n  "o" #'+term/open-popup-in-project
      :desc "Invalidate cache"        :n  "x" #'projectile-invalidate-cache)
