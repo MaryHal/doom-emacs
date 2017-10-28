@@ -265,9 +265,10 @@
      :desc "Browse project"          :n  "." (find-file-in! (doom-project-root))
      :desc "Find file in project"    :n  "/" #'projectile-find-file
      :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
-     :desc "Find file in project"    :n  "c" #'projectile-compile-project
-     :desc "Find file in project"    :n  "u" #'projectile-test-project
+     :desc "Compile project"         :n  "c" #'projectile-compile-project
+     :desc "Run project tests"       :n  "u" #'projectile-test-project
      :desc "Find file in project"    :n  "f" #'projectile-find-file
+     :desc "Kill project buffers"    :n  "k" #'projectile-kill-buffers
      :desc "Switch project"          :n  "p" #'projectile-switch-project
      :desc "Recent project files"    :n  "r" #'projectile-recentf
      (:desc "Search project" :prefix "s"
