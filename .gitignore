@@ -25,3 +25,4 @@ network-security.data
 *.log
 /.persistent-scratch
 /cache/
+.flagged

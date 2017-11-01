@@ -11,9 +11,9 @@
 
 ;; (setq doom-theme 'doom-molokai)
 ;; (setq doom-theme 'doom-nova)
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
 ;; (setq doom-theme 'doom-one-light)
-;; (setq doom-theme 'doom-tomorrow-night)
+(setq doom-theme 'doom-tomorrow-night)
 ;; (setq doom-theme 'doom-vibrant)
 
 (setq doom-font

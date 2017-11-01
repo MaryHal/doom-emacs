@@ -244,7 +244,7 @@
                                  :v  "r" #'+eval:repl
      :desc "Neotree"             :n  "n" #'+neotree/toggle
      :desc "Terminal"            :n  "t" #'+term/open-popup
-     :desc "Terminal in project" :n  "T" #'+term/open-popup-in-project
+     :desc "External Terminal"   :n  "e" #'+mary:term:open-terminal
 
      ;; applications
      :desc "APP: elfeed"  :n "E" #'=rss
