@@ -131,6 +131,7 @@
 
    (:desc "workspace" :prefix "TAB"
      :desc "Display tab bar"          :n "TAB" #'+workspace/display
+     :desc "New workspace"            :n "c"   #'+workspace/new
      :desc "New workspace"            :n "n"   #'+workspace/new
      :desc "Load workspace from file" :n "l"   #'+workspace/load
      :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
