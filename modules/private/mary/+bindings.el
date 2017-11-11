@@ -161,6 +161,7 @@
      :desc "Switch workspace buffer" :n "b" #'persp-switch-to-buffer
      :desc "Switch buffer"           :n "B" #'switch-to-buffer
      :desc "Kill buffer"             :n "k" #'doom/kill-this-buffer
+     :desc "List buffers"            :n "l" #'list-buffers
      :desc "Kill other buffers"      :n "o" #'doom/kill-other-buffers
      :desc "Save buffer"             :n "s" #'save-buffer
      :desc "Pop scratch buffer"      :n "x" #'doom/open-scratch-buffer
