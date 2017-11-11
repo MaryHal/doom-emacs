@@ -136,6 +136,7 @@
      :desc "Load last session"        :n "L"   (λ! (+workspace/load-session))
      :desc "Save workspace to file"   :n "s"   #'+workspace/save
      :desc "Autosave current session" :n "S"   #'+workspace/save-session
+     :desc "Rename workspace"         :n "r"   #'+workspace/rename
      :desc "Switch workspace"         :n "."   #'+workspace/switch-to
      :desc "Kill all buffers"         :n "x"   #'doom/kill-all-buffers
      :desc "Delete session"           :n "X"   #'+workspace/kill-session

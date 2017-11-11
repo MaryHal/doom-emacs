@@ -111,7 +111,8 @@ recognized by DOOM's popup system. They are:
           (grep-mode :size 25 :noselect t :autokill t)
           (profiler-report-mode :size 0.3 :regexp t :autokill t :modeline minimal)
           (tabulated-list-mode :noesc t)
-          ("^ ?\\*" :regexp t :size 15 :noselect t :autokill t :autoclose t)))
+          ;; ("^ ?\\*" :regexp t :size 15 :noselect t :autokill t :autoclose t)
+          ))
 
   :config
   (add-hook 'doom-post-init-hook #'shackle-mode)
@@ -339,38 +340,38 @@ the command buffer."
       (doom--switch-from-popup (find-function-search-for-symbol fun 'defface file)))))
 
 
-(after! magit
-  (set! :popup "^\\*magit" :regexp t :size 0.5 :noesc t :autokill t)
+;; (after! magit
+;;   (set! :popup "^\\*magit" :regexp t :size 0.5 :noesc t :autokill t)
 
-  ;; magit doesn't need much coercing. It works with shackle as is, except for
-  ;; one problem: following non-file magit links tends to open additional
-  ;; popups. We want all this to be contained within one window, so...
-  (defun doom-magit-popup-buffer (buffer)
-    "Pop up the magit window with shackle."
-    (cond ((doom-popup-p)
-           (prog1 (doom-popup-switch-to-buffer buffer)
-             (doom-hide-modeline-mode +1)))
-          (t
-           (magit-display-buffer-traditional buffer))))
+;;   ;; magit doesn't need much coercing. It works with shackle as is, except for
+;;   ;; one problem: following non-file magit links tends to open additional
+;;   ;; popups. We want all this to be contained within one window, so...
+;;   (defun doom-magit-popup-buffer (buffer)
+;;     "Pop up the magit window with shackle."
+;;     (cond ((doom-popup-p)
+;;            (prog1 (doom-popup-switch-to-buffer buffer)
+;;              (doom-hide-modeline-mode +1)))
+;;           (t
+;;            (magit-display-buffer-traditional buffer))))
 
-  (defun doom-magit-quit-window (_kill-buffer)
-    "Close the current magit window properly."
-    (let ((last (current-buffer)))
-      (cond ((when-let (dest (doom-buffers-in-mode
-                              'magit-mode
-                              (cl-loop for buf in (window-prev-buffers)
-                                       unless (eq (car buf) last)
-                                       collect (car buf))
-                              t))
-               (doom-popup-switch-to-buffer (car dest)))
-             (kill-buffer last))
-            (t
-             (mapc #'kill-buffer
-                   (doom-buffers-in-mode '(magit-mode magit-process-mode)
-                                         (buffer-list) t))))))
+;;   (defun doom-magit-quit-window (_kill-buffer)
+;;     "Close the current magit window properly."
+;;     (let ((last (current-buffer)))
+;;       (cond ((when-let (dest (doom-buffers-in-mode
+;;                               'magit-mode
+;;                               (cl-loop for buf in (window-prev-buffers)
+;;                                        unless (eq (car buf) last)
+;;                                        collect (car buf))
+;;                               t))
+;;                (doom-popup-switch-to-buffer (car dest)))
+;;              (kill-buffer last))
+;;             (t
+;;              (mapc #'kill-buffer
+;;                    (doom-buffers-in-mode '(magit-mode magit-process-mode)
+;;                                          (buffer-list) t))))))
 
-  (setq magit-display-buffer-function #'doom-magit-popup-buffer
-        magit-bury-buffer-function #'doom-magit-quit-window))
+;;   (setq magit-display-buffer-function #'doom-magit-popup-buffer
+;;         magit-bury-buffer-function #'doom-magit-quit-window))
 
 
 (after! mu4e

@@ -42,6 +42,9 @@
         company-require-match 'never
         company-selection-wrap-around t))
 
+(after! magit
+  (setq-default magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+
 (when (featurep! :feature evil)
   (load! +bindings)  ; my key bindings
   (load! +commands)) ; my custom ex commands
