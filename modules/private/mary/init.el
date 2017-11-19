@@ -2,6 +2,7 @@
 
 ;; (def-package-hook! rainbow-delimiters :disable)
 ;; (def-package-hook! solaire-mode :disable)
+(def-package-hook! stripe-buffer :disable)
 
 (when (string= system-type "windows-nt")
   (set-selection-coding-system 'utf-16-le))
