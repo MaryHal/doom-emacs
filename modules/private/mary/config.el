@@ -35,6 +35,9 @@
 (after! all-the-icons
   (setq inhibit-compacting-font-caches t))
 
+(after! ivy
+  (setq ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected))
+
 (after! company
   (setq company-idle-delay 0
         company-minimum-prefix-length 2
