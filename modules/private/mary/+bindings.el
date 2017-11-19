@@ -270,6 +270,7 @@
      :desc "Run cmd in project root" :nv "!" #'projectile-run-shell-command-in-root
      :desc "Compile project"         :n  "c" #'projectile-compile-project
      :desc "Run project tests"       :n  "u" #'projectile-test-project
+     :desc "Run project"             :n  "P" #'projectile-run-command
      :desc "Find file in project"    :n  "f" #'projectile-find-file
      :desc "Kill project buffers"    :n  "k" #'projectile-kill-buffers
      :desc "Switch project"          :n  "p" #'projectile-switch-project
