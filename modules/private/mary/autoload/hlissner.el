@@ -6,7 +6,7 @@
 private/hlissner/snippets."
   (interactive)
   (doom-fetch :github "hlissner/emacs-snippets"
-              (expand-file-name "snippets" (doom-module-path :private 'hlissner))))
+              (expand-file-name "snippets" (doom-module-path :private 'mary))))
 
 ;;;###autoload
 (defun +hlissner/yank-buffer-filename ()

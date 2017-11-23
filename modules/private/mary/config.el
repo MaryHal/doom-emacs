@@ -1,5 +1,12 @@
 ;;; private/mary/config.el -*- lexical-binding: t; -*-
 
+(when (featurep! :feature evil)
+  (load! +bindings)  ; my key bindings
+  (load! +commands)) ; my custom ex commands
+
+(defvar +mary-dir (file-name-directory load-file-name))
+(defvar +mary-snippets-dir (expand-file-name "snippets/" +mary-dir))
+
 (after! doom-modeline
   ;; De-bold some icons in doom-modeline
   (set-face-attribute 'doom-modeline-info            nil :weight 'normal)
@@ -45,9 +52,11 @@
         company-require-match 'never
         company-selection-wrap-around t))
 
+;; Don't use default snippets, use mine.
+(after! yasnippet
+  (setq yas-snippet-dirs
+        (append (list '+mary-snippets-dir)
+                (delq 'yas-installed-snippets-dir yas-snippet-dirs))))
+
 (after! magit
   (setq-default magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-
-(when (featurep! :feature evil)
-  (load! +bindings)  ; my key bindings
-  (load! +commands)) ; my custom ex commands
