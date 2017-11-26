@@ -4,6 +4,9 @@
 (package! android-mode)
 (package! groovy-mode)
 
+(when (featurep! +lsp-java)
+  (package! lsp-java))
+
 (when (featurep! +meghanada)
   (package! meghanada))
 
