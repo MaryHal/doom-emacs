@@ -1,7 +1,8 @@
 ;;; core-os.el -*- lexical-binding: t; -*-
 
-(defconst IS-MAC   (eq system-type 'darwin))
-(defconst IS-LINUX (eq system-type 'gnu/linux))
+(defconst IS-MAC     (eq system-type 'darwin))
+(defconst IS-LINUX   (eq system-type 'gnu/linux))
+(defconst IS-WINDOWS (eq system-type 'windows-nt))
 
 ;; clipboard
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)

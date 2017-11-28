@@ -76,6 +76,8 @@
 (def-package! magit
   :commands (magit-status magit-blame)
   :config
+  (when IS-WINDOWS
+    (setenv "SSH_ASKPASS" "git-gui--askpass"))
   (set! :evil-state 'magit-status-mode 'emacs)
   (after! evil
     ;; Switch to emacs state only while in `magit-blame-mode', then back when
