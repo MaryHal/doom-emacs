@@ -4,5 +4,4 @@
 
 (def-package! company-lsp
   :when (featurep! :completion company)
-  :after lsp-mode
-  :config (set! :company-backend 'java-mode '(company-lsp)))
+  :after lsp-mode)
