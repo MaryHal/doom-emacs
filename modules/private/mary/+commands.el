@@ -7,6 +7,8 @@
 ;;(ex! "g[lobal]"     #'+evil:global)
 
 ;;; Custom commands
+(ex! "W" #'save-buffer)
+
 ;; Editing
 (ex! "@"            #'+evil:macro-on-all-lines)   ; TODO Test me
 (ex! "al[ign]"      #'+evil:align)
