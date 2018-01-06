@@ -1,7 +1,9 @@
 ;;; lang/java/config.el -*- lexical-binding: t; -*-
 
-(cond ((featurep! +lsp-java) (load! +lsp-java))
-      ((featurep! +meghanada) (load! +meghanada))
+(add-hook 'java-mode-hook #'rainbow-delimiters-mode)
+
+(cond ((featurep! +meghanada) (load! +meghanada))
+      ((featurep! +lsp-java) (load! +lsp-java))
       ((featurep! +eclim) ; FIXME lang/java +eclim
        ;;(load! +eclim)
        (warn "java-mode: eclim support isn't implemented yet")))
