@@ -58,5 +58,3 @@
 
 (after! magit
   (setq-default magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
-
-(def-package! evil-string-inflection)
