@@ -32,4 +32,4 @@
                  :size 12))
 
 (setq-default frame-title-format '("%b - Emacs"))
-(setq +doom-dashboard-widgets '(shortmenu loaded))
+(setq +doom-dashboard-functions '(doom-dashboard-widget-shortmenu doom-dashboard-widget-loaded))
