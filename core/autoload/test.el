@@ -12,8 +12,7 @@ If neither is available, run all tests in all enabled modules."
       (let (targets)
         ;; ensure DOOM is initialized
         (let (noninteractive)
-          (load (expand-file-name "core/core.el" user-emacs-directory) nil t)
-          (doom-initialize-modules nil))
+          (load (expand-file-name "core/core.el" user-emacs-directory) nil t))
         ;; collect targets
         (cond ((and argv (equal (car argv) "--"))
                (cl-loop for arg in (cdr argv)
@@ -37,8 +36,8 @@ If neither is available, run all tests in all enabled modules."
                  (error "Expected a list of cons, got: %s" modules)))
 
               (t
-               (let ((noninteractive t)
-                     doom-modules)
+               (let (noninteractive)
+                 (clrhash doom-modules)
                  (load (expand-file-name "init.test.el" user-emacs-directory) nil t)
                  (setq modules (doom-module-pairs)
                        targets (list (expand-file-name "test/" doom-core-dir))))))
@@ -76,10 +75,9 @@ If neither is available, run all tests in all enabled modules."
   (declare (indent defun) (doc-string 2))
   (let (plist)
     (while (keywordp (car body))
+      (push (pop body) plist)
       (push (pop body) plist))
     (setq plist (reverse plist))
-    (when (plist-get plist :skip)
-      (setq body `((ert-skip nil) ,@body)))
     (when-let* ((modes (doom-enlist (plist-get plist :minor-mode))))
       (dolist (mode modes)
         (setq body `((with-minor-mode!! ,mode ,@body)))))
@@ -94,10 +92,12 @@ If neither is available, run all tests in all enabled modules."
                    do (setq path (replace-regexp-in-string rep with path t t))
                    finally return (intern (format "%s::%s" path name)))
          ()
-       (with-temp-buffer
-         (save-mark-and-excursion
-           (save-window-excursion
-             ,@body))))))
+       ,(if (plist-get plist :skip)
+            `(ert-skip ,(plist-get plist :skip))
+          `(with-temp-buffer
+             (save-mark-and-excursion
+               (save-window-excursion
+                 ,@body)))))))
 
 (defmacro should-buffer!! (initial expected &rest body)
   "Test that a buffer with INITIAL text, run BODY, then test it against EXPECTED.
@@ -159,8 +159,21 @@ marker. e.g. {2} can be retrieved with (point!! 2)."
                marker-list)))
 
 (defmacro with-minor-mode!! (mode &rest body)
-  "TODO"
+  "Activate a minor mode while in BODY, deactivating it after."
   (declare (indent defun))
   `(progn (,mode +1)
           ,@body
           (,mode -1)))
+
+(defmacro let-advice!! (binds &rest body)
+  "Temporarily bind advice in BINDS while in BODY.
+
+e.g. (old-fn :before advice-fn)
+     (old-fn :around advice-fn)"
+  (declare (indent defun))
+  `(progn
+     ,@(cl-loop for (target type advice) in binds
+                collect `(advice-add #',target ,type #',advice))
+     ,@body
+     ,@(cl-loop for (target type advice) in binds
+                collect `(advice-remove #',target #',advice))))

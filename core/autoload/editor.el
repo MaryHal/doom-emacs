@@ -17,44 +17,46 @@
 
 ;;;###autoload
 (defun doom/backward-to-bol-or-indent ()
-  "Move back to the current line's indentation. If already there, move to the
-beginning of the line instead. If at bol, do nothing."
+  "Jump between the indentation column (first non-whitespace character) and the
+beginning of the line. The opposite of
+`doom/forward-to-last-non-comment-or-eol'."
   (interactive)
-  (if (bound-and-true-p visual-line-mode)
-      (beginning-of-visual-line)
-    (let ((ci (current-indentation))
-          (cc (current-column)))
-      (cond ((or (> cc ci) (= cc 0))
-             (back-to-indentation))
-            ((<= cc ci)
-             (beginning-of-visual-line))))))
+  (let ((pos (point))
+        (indent (save-excursion
+                  (beginning-of-visual-line)
+                  (skip-chars-forward " \t\r")
+                  (point))))
+    (cond ((or (> pos indent) (= pos (line-beginning-position)))
+           (goto-char indent))
+          ((<= pos indent)
+           (beginning-of-visual-line)))))
 
 ;;;###autoload
 (defun doom/forward-to-last-non-comment-or-eol ()
-  "Move forward to the last non-blank character in the line, ignoring comments
-and trailing whitespace. If already there, move to the real end of the line.
-If already there, do nothing."
+  "Jumps between the last non-blank, non-comment character in the line and the
+true end of the line. The opposite of `doom/backward-to-bol-or-indent'."
   (interactive)
-  (let* ((point (point))
-         (eol (save-excursion (end-of-visual-line) (point)))
-         (bol (save-excursion (beginning-of-visual-line) (point)))
-         (eoc (or (if (not comment-use-syntax)
-                      (when (re-search-forward comment-start-skip eol t)
-                        (or (match-end 1) (match-beginning 0)))
-                    (save-excursion
-                      (goto-char eol)
-                      (while (and (sp-point-in-comment)
-                                  (> (point) point))
-                        (backward-char))
-                      (when (> (point) point)
-                        (skip-chars-backward " " bol)
-                        (point))))
-                  eol))
-         (goto-char-fn (if (featurep 'evil) #'evil-goto-char #'goto-char)))
-    (if (= eoc point)
-        (funcall goto-char-fn eol)
-      (unless (= eol point)
-        (funcall goto-char-fn eoc)))))
+  (let ((eol (save-excursion (end-of-visual-line) (point))))
+    (if (and (sp-point-in-comment) (not (= (point) eol)))
+        (goto-char eol)
+      (let* ((bol (save-excursion (beginning-of-visual-line) (point)))
+             (boc (or (save-excursion
+                        (if (not comment-use-syntax)
+                            (progn
+                              (goto-char bol)
+                              (when (re-search-forward comment-start-skip eol t)
+                                (or (match-end 1) (match-beginning 0))))
+                          (goto-char eol)
+                          (while (and (sp-point-in-comment)
+                                      (> (point) bol))
+                            (backward-char))
+                          (skip-chars-backward " " bol)
+                          (point)))
+                      eol)))
+        (cond ((= boc (point))
+               (goto-char eol))
+              ((/= bol boc)
+               (goto-char boc)))))))
 
 (defun doom--surrounded-p ()
   (and (looking-back "[[{(]\\(\s+\\|\n\\)?\\(\s\\|\t\\)*" (line-beginning-position))
@@ -218,6 +220,7 @@ consistent throughout a selected region, depending on `indent-tab-mode'."
       (tabify beg end)
     (untabify beg end)))
 
+(defvar-local doom--buffer-narrowed-origin nil)
 ;;;###autoload
 (defun doom/narrow-buffer (beg end &optional clone-p)
   "Restrict editing in this buffer to the current region, indirectly. With CLONE-P,
@@ -231,12 +234,12 @@ Inspired from http://demonastery.org/2013/04/emacs-evil-narrow-region/"
          (when clone-p
            (let ((old-buf (current-buffer)))
              (switch-to-buffer (clone-indirect-buffer nil nil))
-             (setq doom-buffer--narrowed-origin old-buf)))
+             (setq doom--buffer-narrowed-origin old-buf)))
          (narrow-to-region beg end))
-        (doom-buffer--narrowed-origin
+        (doom--buffer-narrowed-origin
          (kill-this-buffer)
-         (switch-to-buffer doom-buffer--narrowed-origin)
-         (setq doom-buffer--narrowed-origin nil))
+         (switch-to-buffer doom--buffer-narrowed-origin)
+         (setq doom--buffer-narrowed-origin nil))
         (t
          (widen))))
 

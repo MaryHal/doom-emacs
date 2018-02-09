@@ -1,12 +1,8 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; lang/org/packages.el
 
-(when (version< emacs-version "26.1")
-  ;; We want org 9.1.x, but the org packaged with Emacs 25.x and under is 8.x.
-  ;; The only secure (and reasonably trustworthy) source for this is via
-  ;; emacsmirror. Emacs 26+ comes with Org 9.1.4.
-  (package! org-plus-contrib
-    :recipe (:fetcher github :repo "emacsmirror/org" :files (:defaults "contrib/lisp/*.el"))))
+;; Installs a cutting-edge version of org-mode
+(package! org-plus-contrib)
 
 (package! org-bullets :recipe (:fetcher github :repo "hlissner/org-bullets"))
 (package! toc-org)
@@ -15,19 +11,26 @@
   (package! org-download))
 
 (when (featurep! +babel)
-  (package! ob-go)
   (package! ob-mongo)
   (package! ob-redis)
-  (package! ob-restclient)
-  (package! ob-rust)
   (package! ob-sql-mode)
-  (package! ob-translate))
+  (package! ob-translate)
+
+  (when (featurep! :lang go)
+    (package! ob-go))
+  (when (featurep! :lang rust)
+    (package! ob-rust))
+  (when (featurep! :lang restclient)
+    (package! ob-restclient))
+  (when (featurep! :lang crystal)
+    (package! ob-crystal)))
 
 (when (featurep! +export)
-  (package! ox-pandoc))
+  (package! ox-pandoc)
+  (package! htmlize))
 
 (when (featurep! +present)
-  (package! centered-window-mode)
+  (package! centered-window :recipe (:fetcher github :repo "anler/centered-window-mode"))
   (package! org-tree-slide)
   (package! ox-reveal))
 

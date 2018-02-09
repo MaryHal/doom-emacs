@@ -6,13 +6,14 @@
   :config
   (add-hook 'go-mode-hook #'flycheck-mode)
 
-  (setq gofmt-command "goimports")
+  (setq gofmt-command "goimports"
+        gofmt-show-errors nil)
   (if (not (executable-find "goimports"))
       (warn "go-mode: couldn't find goimports; no code formatting/fixed imports on save")
     (add-hook! go-mode (add-hook 'before-save-hook #'gofmt-before-save nil t)))
 
   (set! :repl 'go-mode #'gorepl-run)
-  (set! :jump 'go-mode
+  (set! :lookup 'go-mode
     :definition #'go-guru-definition
     :references #'go-guru-referrers
     :documentation #'godoc-at-point)
@@ -90,6 +91,7 @@
   :when (featurep! :completion company)
   :after go-mode
   :config
+  (setq company-go-show-annotation t)
   (if (executable-find command-go-gocode-command)
       (set! :company-backend 'go-mode '(company-go))
     (warn "go-mode: couldn't find gocode, code completion won't work")))

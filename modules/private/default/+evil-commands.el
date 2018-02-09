@@ -2,11 +2,31 @@
 
 (defalias 'ex! 'evil-ex-define-cmd)
 
-  ;;; Commands defined elsewhere
+(evil-define-command doom:cleanup-session (bang)
+  (interactive "<!>")
+  (doom/cleanup-session bang))
+
+(evil-define-operator doom:open-scratch-buffer (bang)
+  (interactive "<!>")
+  (doom/open-scratch-buffer bang))
+
+(evil-define-command doom:pwd (bang)
+  (interactive "<!>")
+  (if (not bang)
+      (pwd)
+    (kill-new default-directory)
+    (message "Copied to clipboard")))
+
+
+;;
+;; Commands
+;;
+
+;;; Commands defined elsewhere
 ;;(ex! "al[ign]"      #'+evil:align)
 ;;(ex! "g[lobal]"     #'+evil:global)
 
-  ;;; Custom commands
+;;; Custom commands
 ;; Editing
 (ex! "@"            #'+evil:macro-on-all-lines)   ; TODO Test me
 (ex! "al[ign]"      #'+evil:align)
@@ -20,14 +40,16 @@
 ;; TODO (ex! "db"          #'doom:db)
 ;; TODO (ex! "dbu[se]"     #'doom:db-select)
 ;; TODO (ex! "go[ogle]"    #'doom:google-search)
-(ex! "lo[okup]"    #'+jump:online)
+(ex! "lo[okup]"    #'+lookup:online)
+(ex! "dash"        #'+lookup:dash)
+(ex! "dd"          #'+lookup:devdocs)
 (ex! "http"        #'httpd-start)            ; start http server
 (ex! "repl"        #'+eval:repl)             ; invoke or send to repl
 ;; TODO (ex! "rx"          'doom:regex)             ; open re-builder
 (ex! "sh[ell]"     #'+eshell:run)
 (ex! "t[mux]"      #'+tmux:run)              ; send to tmux
 (ex! "tcd"         #'+tmux:cd-here)          ; cd to default-directory in tmux
-(ex! "x"           #'doom/open-project-scratch-buffer)
+(ex! "x"           #'doom:open-scratch-buffer)
 ;; GIT
 (ex! "gist"        #'+gist:send)  ; send current buffer/region to gist
 (ex! "gistl"       #'+gist:list)  ; list gists by user
@@ -39,7 +61,7 @@
 (ex! "gblame"      #'magit-blame)
 (ex! "grevert"     #'git-gutter:revert-hunk)
 ;; Dealing with buffers
-(ex! "clean[up]"   #'doom/cleanup-session)
+(ex! "clean[up]"   #'doom:cleanup-session)
 (ex! "k[ill]"      #'doom/kill-this-buffer)
 (ex! "k[ill]all"   #'+default:kill-all-buffers)
 (ex! "k[ill]m"     #'+default:kill-matching-buffers)
@@ -50,6 +72,7 @@
 ;; Project navigation
 (ex! "a"           #'projectile-find-other-file)
 (ex! "cd"          #'+default:cd)
+(ex! "pwd"         #'doom:pwd)
 (cond ((featurep! :completion ivy)
        (ex! "ag"       #'+ivy:ag)
        (ex! "agc[wd]"  #'+ivy:ag-cwd)

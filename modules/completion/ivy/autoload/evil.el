@@ -44,8 +44,10 @@
                         ((equal directory project-root)
                          (projectile-project-name))
                         (t
-                         (file-relative-name directory project-root))))))
+                         (file-relative-name directory project-root)))))
+         (default-directory directory))
     (setq +ivy--file-last-search query)
+    (require 'counsel)
     (pcase engine
       ('ag
        (let ((args (concat

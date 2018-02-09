@@ -27,7 +27,7 @@ MODES should be one major-mode symbol or a list of them."
              company-complete-common company-manual-begin company-grab-line)
   :config
   (setq company-idle-delay nil
-        company-tooltip-limit 10
+        company-tooltip-limit 14
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil
         company-dabbrev-code-other-buffers t
@@ -35,13 +35,13 @@ MODES should be one major-mode symbol or a list of them."
         company-require-match 'never
         company-global-modes '(not eshell-mode comint-mode erc-mode message-mode help-mode gud-mode)
         company-frontends '(company-pseudo-tooltip-frontend company-echo-metadata-frontend)
-        company-backends '(company-capf company-dabbrev company-ispell)
+        company-backends '(company-capf company-dabbrev company-ispell company-yasnippet)
         company-transformers '(company-sort-by-occurrence))
-
-  (after! yasnippet
-    (nconc company-backends '(company-yasnippet)))
-
   (global-company-mode +1))
+
+(when (featurep! +auto)
+  (require 'company)
+  (setq company-idle-delay 0.2))
 
 
 (def-package! company-statistics
@@ -71,16 +71,16 @@ MODES should be one major-mode symbol or a list of them."
 
 
 ;;
-;; Autoloads
+;; Included with company.el
 ;;
 
 (autoload 'company-capf "company-capf")
-(autoload 'company-yasnippet "company-yasnippet")
 (autoload 'company-dabbrev "company-dabbrev")
 (autoload 'company-dabbrev-code "company-dabbrev-code")
-(autoload 'company-etags "company-etags")
 (autoload 'company-elisp "company-elisp")
+(autoload 'company-etags "company-etags")
 (autoload 'company-files "company-files")
 (autoload 'company-gtags "company-gtags")
 (autoload 'company-ispell "company-ispell")
+(autoload 'company-yasnippet "company-yasnippet")
 
