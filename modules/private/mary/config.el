@@ -58,3 +58,5 @@
 
 (after! magit
   (setq-default magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+
+(put 'narrow-to-region 'disabled nil)
