@@ -70,7 +70,7 @@
  :en "C-k"    #'evil-window-up
  :en "C-l"    #'evil-window-right
  ;; Other
- :n  "K"      #'join-line
+ :nv  "K"     #'join-line
 
  (:after anzu
    "M-%"   #'anzu-query-replace
