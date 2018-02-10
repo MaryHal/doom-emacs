@@ -137,5 +137,7 @@
       ;twitter           ; twitter client https://twitter.com/vnought
       ;write             ; emacs as a word processor (latex + org + markdown)
 
-       :private mary)
+       :private
+       (default +bindings +commands)
+       mary)
 

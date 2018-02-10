@@ -25,3 +25,11 @@
              (get-buffer bufname)))
     (switch-to-buffer (get-buffer-create bufname))
     (lisp-interaction-mode)))
+
+;;;###autoload
+(defun +mary:term:open-terminal ()
+  "Just open a terminal in the cwd using the $TERMINAL environment variable."
+  (interactive)
+  (cond
+   (IS-LINUX (call-process-shell-command (getenv "TERMINAL") nil 0))
+   (IS-WINDOWS (call-process-shell-command "start powershell.exe" nil 0))))
