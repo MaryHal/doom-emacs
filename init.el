@@ -27,9 +27,7 @@
 ;;
 ;;; License: MIT
 
-(setq user-login-name "mary")
 (require 'core (concat user-emacs-directory "core/core"))
-
 (doom! :feature
        (popup            ; tame sudden yet inevitable temporary windows
         +all             ; catch all popups that start with an asterix
@@ -78,6 +76,7 @@
        make              ; run make tasks from Emacs
        neotree           ; a project drawer, like NERDTree for vim
        password-store    ; password manager for nerds
+      ;pdf               ; pdf enhancements
        rotate-text       ; cycle region at point between text candidates
        term              ; terminals in Emacs
        tmux              ; an API for interacting with tmux
@@ -137,7 +136,12 @@
       ;twitter           ; twitter client https://twitter.com/vnought
       ;write             ; emacs as a word processor (latex + org + markdown)
 
+       ;; Private modules are where you place your personal configuration files.
+       ;; By default, they are not tracked. There is one module included here,
+       ;; the defaults module. It contains a Spacemacs-inspired keybinding
+       ;; scheme and additional ex commands for evil-mode. Use it as a reference
+       ;; for your own.
        :private
-       (default +bindings +evil-commands)
+       (default +bindings +snippets +evil-commands)
        mary)
 
