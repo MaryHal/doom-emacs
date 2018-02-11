@@ -3,7 +3,7 @@ EMACS_FLAGS=--eval '(setq user-emacs-directory default-directory)' -l core/core.
 EMACS=emacs --quick --batch $(EMACS_FLAGS)
 EMACSI=emacs -q $(EMACS_FLAGS)
 
-MODULES=$(patsubst modules/%, %, $(shell find -L modules/ -maxdepth 2 -type d))
+MODULES=$(patsubst modules/%/, %, $(sort $(dir $(wildcard modules/*/ modules/*/*/))))
 
 all: autoloads autoremove install
 
@@ -78,6 +78,10 @@ run:
 # Diagnoses potential OS/environment issues
 doctor:
 	@bin/doom-doctor
+
+# Prints debug info about your current setup
+info:
+	@$(EMACS) -l core/autoload/debug.el -f doom/info
 
 ## Internal tasks
 init.el:
