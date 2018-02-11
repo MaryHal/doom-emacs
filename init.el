@@ -138,6 +138,6 @@
       ;write             ; emacs as a word processor (latex + org + markdown)
 
        :private
-       (default +bindings +commands)
+       (default +bindings +evil-commands)
        mary)
 
