@@ -27,3 +27,4 @@ network-security.data
 /cache/
 .flagged
 /.emacs.d
+/server/server

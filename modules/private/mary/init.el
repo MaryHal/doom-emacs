@@ -4,6 +4,8 @@
 ;; (def-package-hook! solaire-mode :disable)
 (def-package-hook! stripe-buffer :disable)
 
+(setq-default server-auth-dir (concat doom-emacs-dir "server/"))
+
 (when (string= system-type "windows-nt")
   (set-selection-coding-system 'utf-16-le))
 
