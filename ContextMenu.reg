@@ -7,35 +7,35 @@ Windows Registry Editor Version 5.00
 @="&Emacs: Edit in existing window"
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\*\shell\emacsopen1sameframe\command]
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n \"%1\""
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n \"%1\""
 
 ;; Open file in new frame
 [HKEY_CLASSES_ROOT\*\shell\emacsopen2newframe]
 @="&Emacs: Edit in new window"
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\*\shell\emacsopen2newframe\command]
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -c -n \"%1\""
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -c -n \"%1\""
 
 ;; Dired for desktop background
 [HKEY_CLASSES_ROOT\DesktopBackground\shell\emacsopensameframe]
 @="&Emacs: Open in dired"
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\DesktopBackground\shell\emacsopensameframe\command]
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n \"%v\""
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n \"%v\""
 
 ;; Dired for directory
 [HKEY_CLASSES_ROOT\Directory\shell\emacsopensameframe]
 @="&Emacs: Open in dired"
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\Directory\shell\emacsopensameframe\command]
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n \"%V\""
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n \"%V\""
 
 ;; Dired for directory background
 [HKEY_CLASSES_ROOT\Directory\Background\shell\emacsopensameframe]
 @="&Emacs: Open in dired"
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\Directory\Background\shell\emacsopensameframe\command]
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n \"%V\""
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n \"%V\""
 
 ;; Dired for drive background
 [HKEY_CLASSES_ROOT\Drive\Background\shell\EmacsOpenDirSameFrame]
@@ -43,7 +43,7 @@ Windows Registry Editor Version 5.00
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\Drive\Background\shell\EmacsOpenDirSameFrame\command]
 ;; as drives haven't space inside their name don't use quoting
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n %L"
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n %L"
 
 ;; Dired for drive
 [HKEY_CLASSES_ROOT\Drive\shell\EmacsOpenDirSameFrame]
@@ -51,4 +51,4 @@ Windows Registry Editor Version 5.00
 "icon"="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe"
 [HKEY_CLASSES_ROOT\Drive\shell\EmacsOpenDirSameFrame\command]
 ;; as drives haven't space inside their name don't use quoting
-@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\emacsclient.exe\" -n %L"
+@="C:\\ProgramData\\chocolatey\\bin\\emacsclientw.exe  -n --alternate-editor=\"C:\\ProgramData\\chocolatey\\bin\\runemacs.exe\" -n %L"
