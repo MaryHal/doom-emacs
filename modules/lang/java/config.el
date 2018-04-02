@@ -6,7 +6,7 @@
       ((featurep! +lsp-java) (load! +lsp-java))
       ((featurep! +eclim) ; FIXME lang/java +eclim
        ;;(load! +eclim)
-       (warn "java-mode: eclim support isn't implemented yet")))
+       (warn! "Eclim support isn't implemented yet")))
 
 
 ;;

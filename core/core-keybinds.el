@@ -36,6 +36,8 @@ If any hook returns non-nil, all hooks after it are ignored.")
          (abort-recursive-edit))
         ;; Run all escape hooks. If any returns non-nil, then stop there.
         ((run-hook-with-args-until-success 'doom-escape-hook))
+        ;; don't abort macros
+        ((or defining-kbd-macro executing-kbd-macro) nil)
         ;; Back to the default
         (t (keyboard-quit))))
 
@@ -182,6 +184,8 @@ States
     inner binding, another for the outer.
 
 Flags
+    (:leader [...])            an alias for (:prefix doom-leader-key ...)
+    (:localleader [...])       an alias for (:prefix doom-localleader-key ...)
     (:mode [MODE(s)] [...])    inner keybinds are applied to major MODE(s)
     (:map [KEYMAP(s)] [...])   inner keybinds are applied to KEYMAP(S)
     (:map* [KEYMAP(s)] [...])  same as :map, but deferred
@@ -291,24 +295,25 @@ Example
                        (when (memq 'global states)
                          (push `(define-key ,keymap ,key ,def) forms))
                        (when-let* ((states (delq 'global states)))
-                         (push `(,(if doom--defer 'evil-define-key 'evil-define-key*)
+                         (push `(,(if doom--defer #'evil-define-key #'evil-define-key*)
                                  ',states ,keymap ,key ,def)
                                forms))))
                     (states
                      (unless (featurep 'evil)
                        (throw 'skip 'evil))
                      (dolist (state states)
-                       (push `(define-key
-                                ,(if (eq state 'global)
-                                     '(current-global-map)
-                                   (intern (format "evil-%s-state-%smap" state (if doom--local "local-" ""))))
-                                ,key ,def)
+                       (push (if (eq state 'global)
+                                 `(global-set-key ,key ,def)
+                               (if doom--local
+                                   `(evil-local-set-key ',state ,key ,def)
+                                 `(evil-define-key* ',state 'global ,key ,def)))
                              forms)))
                     (doom--keymaps
                      (dolist (keymap doom--keymaps)
                        (push `(define-key ,keymap ,key ,def) forms)))
                     (t
-                     (push `(,(if doom--local 'local-set-key 'global-set-key) ,key ,def)
+                     (push `(,(if doom--local #'local-set-key #'global-set-key)
+                             ,key ,def)
                            forms))))
           (setq states '()
                 doom--local nil

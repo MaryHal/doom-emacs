@@ -4,18 +4,22 @@
 ;; Installs a cutting-edge version of org-mode
 (package! org-plus-contrib)
 
-(package! org-bullets :recipe (:fetcher github :repo "hlissner/org-bullets"))
+(package! org-bullets :recipe (:fetcher github :repo "Kaligule/org-bullets"))
 (package! toc-org)
+
+(when (featurep! :feature evil)
+  (package! evil-org))
 
 (when (featurep! +attach)
   (package! org-download))
 
 (when (featurep! +babel)
   (package! ob-mongo)
-  (package! ob-redis)
   (package! ob-sql-mode)
   (package! ob-translate)
 
+  (when (featurep! :lang crystal)
+    (package! ob-crystal))
   (when (featurep! :lang go)
     (package! ob-go))
   (when (featurep! :lang rust)

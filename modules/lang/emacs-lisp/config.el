@@ -5,9 +5,8 @@
   :config
   (set! :repl 'emacs-lisp-mode #'+emacs-lisp/repl)
   (set! :eval 'emacs-lisp-mode #'+emacs-lisp-eval)
-
-  ;; An xref backend is set up automatically for emacs-lisp-mode
-  (set! :lookup 'emacs-lisp-mode :documentation #'describe-symbol)
+  (set! :lookup 'emacs-lisp-mode :documentation 'info-lookup-symbol)
+  (set! :docset '(lisp-mode emacs-lisp-mode) "Emacs Lisp")
 
   (set! :rotate 'emacs-lisp-mode
     :symbols '(("t" "nil")
@@ -56,7 +55,11 @@
   (defun +emacs-lisp|init-flycheck ()
     "Initialize flycheck-mode if not in emacs.d."
     (when (and buffer-file-name
-               (not (file-in-directory-p buffer-file-name doom-emacs-dir)))
+               (not (cl-loop for dir in (append (list doom-emacs-dir)
+                                                doom-modules-dirs
+                                                doom-psuedo-module-dirs)
+                             if (file-in-directory-p buffer-file-name dir)
+                             return t)))
       (flycheck-mode +1))))
 
 
@@ -110,7 +113,7 @@
   :when (featurep! :feature syntax-checker)
   :commands flycheck-cask-setup
   :init
-  (add-hook! 'emacs-lisp-hook
+  (add-hook! 'emacs-lisp-mode-hook
     (add-hook 'flycheck-mode-hook #'flycheck-cask-setup nil t)))
 
 

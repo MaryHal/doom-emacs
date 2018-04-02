@@ -14,12 +14,13 @@
 
 
 (def-package! git-gutter-fringe
-  :commands git-gutter-mode
+  :defer t
   :init
   (defun +version-control|git-gutter-maybe ()
     "Enable `git-gutter-mode' in non-remote buffers."
     (when (and (buffer-file-name)
                (not (file-remote-p (buffer-file-name))))
+      (require 'git-gutter-fringe)
       (git-gutter-mode +1)))
   (add-hook! (text-mode prog-mode conf-mode) #'+version-control|git-gutter-maybe)
   :config
@@ -64,8 +65,6 @@
 (def-package! git-timemachine
   :commands (git-timemachine git-timemachine-toggle)
   :config
-  (require 'magit-blame)
-
   ;; Sometimes I forget `git-timemachine' is enabled in a buffer, so instead of
   ;; showing revision details in the minibuffer, show them in
   ;; `header-line-format', which has better visibility.
@@ -74,21 +73,6 @@
 
   ;; Force evil to rehash keybindings for the current state
   (add-hook 'git-timemachine-mode-hook #'evil-force-normal-state))
-
-
-(def-package! magit
-  :commands (magit-status magit-blame)
-  :config
-  (when IS-WINDOWS
-    (setenv "SSH_ASKPASS" "git-gui--askpass"))
-  (set! :popup "^\\*magit" :ignore)
-  (set! :evil-state 'magit-status-mode 'emacs)
-  (after! evil
-    ;; Switch to emacs state only while in `magit-blame-mode', then back when
-    ;; its done (since it's a minor-mode).
-    (add-hook! 'magit-blame-mode-hook
-      (evil-local-mode (if magit-blame-mode -1 +1)))))
-
 
 (def-package! git-link
   :commands (git-link git-link-commit git-link-homepage))

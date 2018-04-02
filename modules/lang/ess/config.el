@@ -1,7 +1,7 @@
 ;;; lang/ess/config.el -*- lexical-binding: t; -*-
 
 (def-package! ess-site
-  :init (load "ess-autoloads" nil t)
+  :commands (R stata julia SAS)
   :mode (("\\.sp\\'"           . S-mode)
          ("/R/.*\\.q\\'"       . R-mode)
          ("\\.[qsS]\\'"        . S-mode)
@@ -29,18 +29,17 @@
          ("\\.[Jj][Aa][Gg]\\'" . ess-jags-mode)
          ("\\.[Jj][Oo][Gg]\\'" . ess-jags-mode)
          ("\\.[Jj][Mm][Dd]\\'" . ess-jags-mode))
-  :commands (R stata julia SAS)
   :init
   (unless (featurep! :lang julia)
     (push (cons "\\.jl\\'" 'ess-julia-mode) auto-mode-alist))
   :config
-  (setq ess-first-continued-statement-offset 2
-        ess-continued-statement-offset 0
+  (add-hook 'ess-mode-hook #'doom|enable-line-numbers)
+  (setq ess-offset-continued 'straight
         ess-expression-offset 2
         ess-nuke-trailing-whitespace-p t
         ess-default-style 'DEFAULT)
   (ess-toggle-underscore t)
-  (set! :repl 'ess-mode #'+r/repl)
+  (set! :repl 'ess-mode #'+ess/r-repl)
   (set! :lookup 'ess-mode :documentation #'ess-display-help-on-object)
   (map! (:map ess-doc-map
           "h"             #'ess-display-help-on-object

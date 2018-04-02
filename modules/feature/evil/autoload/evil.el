@@ -72,19 +72,27 @@ evil-window-move-* (e.g. `evil-window-move-far-left')"
 ;;;###autoload
 (defun +evil/window-move-down () "See `+evil--window-swap'"  (interactive) (+evil--window-swap 'down))
 
-;;;###autoload (autoload '+evil:macro-on-all-lines "feature/evil/autoload/evil" nil t)
-(evil-define-operator +evil:macro-on-all-lines (beg end &optional macro)
+;;;###autoload (autoload '+evil:apply-macro "feature/evil/autoload/evil" nil t)
+(evil-define-operator +evil:apply-macro (beg end)
   "Apply macro to each line."
   :motion nil
   :move-point nil
-  (interactive "<r><a>")
-  (unless (and beg end)
-    (setq beg (region-beginning)
-          end (region-end)))
-  (evil-ex-normal beg end
-                  (concat "@"
-                          (single-key-description
-                           (or macro (read-char "@-"))))))
+  (interactive "<r>")
+  (let ((register (or evil-this-register (read-char)))
+        macro)
+    (cond ((or (and (eq register ?@) (eq evil-last-register ?:))
+               (eq register ?:))
+           (setq macro (lambda () (evil-ex-repeat nil))
+                 evil-last-register ?:))
+          ((eq register ?@)
+           (unless evil-last-register
+             (user-error "No previously executed keyboard macro."))
+           (setq macro (evil-get-register evil-last-register t)))
+          ((setq macro (evil-get-register register t)
+                 evil-last-register register)))
+    (evil-change-state 'normal)
+    (evil-with-single-undo
+      (apply-macro-to-region-lines beg end macro))))
 
 ;;;###autoload (autoload '+evil:retab "feature/evil/autoload/evil" nil t)
 (evil-define-operator +evil:retab (&optional beg end)
@@ -123,7 +131,7 @@ evil-window-move-* (e.g. `evil-window-move-far-left')"
              (not (zerop (length arg))))
     (condition-case lossage
         (let ((pattern (evil-ex-make-substitute-pattern
-                        (if evil-ex-bang (regexp-quote arg) arg)
+                        arg
                         (or flags (list))))
               (range (or (evil-copy-range evil-ex-range)
                          (evil-range (or beg (line-beginning-position))
@@ -167,15 +175,25 @@ evil-window-move-* (e.g. `evil-window-move-far-left')"
 
 ;;;###autoload (autoload '+evil:align "feature/evil/autoload/evil" nil t)
 (evil-define-operator +evil:align (beg end pattern &optional bang)
-  "Ex interface to `align-regexp'. Accepts vim-style regexps."
-  (interactive "<r><//><!>")
+  "Ex interface to `align-regexp'. PATTERN is a vim-style regexp. If BANG,
+repeat the alignment for all matches (otherwise just the first match on each
+line)."
+  (interactive "<r><//g><!>")
   (align-regexp
    beg end
-   (concat "\\(\\s-*\\)"
-           (if bang
-               (regexp-quote pattern)
-             (evil-transform-vim-style-regexp pattern)))
-   1 1))
+   (concat "\\(\\s-*\\)" (evil-transform-vim-style-regexp pattern))
+   1 1 bang))
+
+;;;###autoload (autoload '+evil:align-right "feature/evil/autoload/evil" nil t)
+(evil-define-operator +evil:align-right (beg end pattern &optional bang)
+  "Like `+evil:align', except alignments are right-justified. PATTERN is a
+vim-style regexp. If BANG, repeat the alignment for all matches (otherwise just
+the first match on each line)."
+  (interactive "<r><//g><!>")
+  (align-regexp
+   beg end
+   (concat "\\(" (evil-transform-vim-style-regexp pattern) "\\)")
+   -1 1 bang))
 
 
 ;; --- wgrep ------------------------------

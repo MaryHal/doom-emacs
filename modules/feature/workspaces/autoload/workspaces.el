@@ -6,11 +6,11 @@
 ;;
 (defface +workspace-tab-selected-face '((t (:inherit 'highlight)))
   "The face for selected tabs displayed by `+workspace/display'"
-  :group 'doom)
+  :group 'persp-mode)
 
 (defface +workspace-tab-face '((t (:inherit 'default)))
   "The face for selected tabs displayed by `+workspace/display'"
-  :group 'doom)
+  :group 'persp-mode)
 
 
 ;;
@@ -49,7 +49,7 @@
 ;; --- Getters ----------------------------
 
 ;;;###autoload
-(defalias '+workspace-current #'get-current-persp
+(defalias #'+workspace-current #'get-current-persp
   "Return the currently active workspace.")
 
 ;;;###autoload
@@ -454,6 +454,17 @@ the next."
 ;;
 
 ;;;###autoload
+(defun +workspaces|auto-add-buffer ()
+  "Auto-associate buffers with perspectives upon opening them.
+
+Allows a perspective-specific buffer list via `+workspaces-buffer-list'."
+  (when (and persp-mode
+             (not persp-temporarily-display-buffer)
+             (doom-real-buffer-p))
+    (persp-add-buffer (current-buffer) (get-current-persp) nil)
+    (force-mode-line-update t)))
+
+;;;###autoload
 (defun +workspaces|delete-associated-workspace (&optional frame)
   "Delete workspace associated with current frame.
 A workspace gets associated with a frame when a new frame is interactively
@@ -497,49 +508,45 @@ created."
   (setq +workspaces--project-dir default-directory))
 
 ;;;###autoload
-(defun +workspaces|switch-to-project (&optional inhibit-prompt)
+(defun +workspaces|switch-to-project (&optional dir)
   "Creates a workspace dedicated to a new project. If one already exists, switch
 to it. If in the main workspace and it's empty, recycle that workspace, without
 renaming it.
 
 Should be hooked to `projectile-after-switch-project-hook'."
+  (when dir
+    (setq +workspaces--project-dir dir))
   (when (and persp-mode +workspaces--project-dir)
     (unwind-protect
         (if (+workspace-buffer-list)
-            (let (persp-p)
-              (let* ((persp
-                      (let* ((default-directory +workspaces--project-dir)
-                             (project-name (doom-project-name 'nocache)))
-                        (or (setq persp-p (+workspace-get project-name t))
-                            (+workspace-new project-name))))
-                     (new-name (persp-name persp)))
-                (+workspace-switch new-name)
-                (unless persp-p
-                  (switch-to-buffer (doom-fallback-buffer)))
-                (unless inhibit-prompt
-                  (doom-project-find-file +workspaces--project-dir))
-                (+workspace-message
-                 (format "Switched to '%s' in new workspace" new-name)
-                 'success)))
+            (let* (persp-p
+                   (persp
+                    (let* ((default-directory +workspaces--project-dir)
+                           (project-name (doom-project-name 'nocache)))
+                      (or (setq persp-p (+workspace-get project-name t))
+                          (+workspace-new project-name))))
+                   (new-name (persp-name persp)))
+              (+workspace-switch new-name)
+              (unless persp-p
+                (switch-to-buffer (doom-fallback-buffer)))
+              (with-current-buffer (doom-fallback-buffer)
+                (setq default-directory +workspaces--project-dir))
+              (unless current-prefix-arg
+                (funcall +workspaces-switch-project-function +workspaces--project-dir))
+              (+workspace-message
+               (format "Switched to '%s' in new workspace" new-name)
+               'success))
           (with-current-buffer (switch-to-buffer (doom-fallback-buffer))
             (setq default-directory +workspaces--project-dir)
             (message "Switched to '%s'" (doom-project-name 'nocache)))
-          (unless inhibit-prompt
-            (doom-project-find-file +workspaces--project-dir)))
+          (unless current-prefix-arg
+            (funcall +workspaces-switch-project-function +workspaces--project-dir)))
       (setq +workspaces--project-dir nil))))
 
 
 ;;
 ;; Advice
 ;;
-
-;;;###autoload
-(defun +workspaces*switch-counsel-project-action (project)
-  "A `counsel-projectile-switch-project-action' that creates a dedicated
-workspace for a new project, before prompting to open a file."
-  (let ((+workspaces--project-dir project)
-        (inhibit-message t))
-    (+workspaces|switch-to-project 'inhibit-prompt)))
 
 ;;;###autoload
 (defun +workspaces*autosave-real-buffers (orig-fn &rest args)

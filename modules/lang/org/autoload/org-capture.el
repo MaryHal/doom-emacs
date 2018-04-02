@@ -1,32 +1,7 @@
 ;;; lang/org/autoload/org-capture.el -*- lexical-binding: t; -*-
 ;;;###if (featurep! +capture)
 
-(when (featurep! :feature evil)
-;;;###autoload (autoload '+org-capture:open "lang/org/autoload/org-capture" nil t)
-  (evil-define-operator +org-capture:open (&optional beg end)
-    "Evil ex interface to `+org-capture/dwim'."
-    :move-point nil :type inclusive
-    (interactive "<r>")
-    (+org-capture/open
-     (unless (or (evil-normal-state-p) (evil-insert-state-p))
-       (buffer-substring beg end)))))
-
-;;;###autoload
-(defun +org-capture/open (&optional string key)
-  "Sends STRING, the current selection or prompted input to `org-capture'.
-
-Uses the capture template specified by KEY. Otherwise, prompts you for one."
-  (interactive)
-  (let ((key (or key "n")))
-    (if-let* ((string (cond ((not (equal string ""))
-                             string)
-                            ((region-active-p)
-                             (buffer-substring-no-properties
-                              (region-beginning)
-                              (region-end))))))
-        (org-capture-string string key)
-      (org-capture nil key))))
-
+(defvar org-capture-initial)
 
 ;; --- External frame ---------------------
 
@@ -63,17 +38,16 @@ you're done. This can be called from an external shell script."
     (setq string nil))
   (when (and key (string-empty-p key))
     (setq key nil))
-  (require 'org-capture)
   (let ((frame (if (+org-capture-frame-p)
                    (selected-frame)
                  (make-frame +org-capture-window-params))))
     (with-selected-frame frame
+      (require 'org-capture)
       (condition-case ex
           (cl-letf (((symbol-function #'pop-to-buffer)
                      (symbol-function #'switch-to-buffer)))
             (switch-to-buffer (doom-fallback-buffer))
             (let ((org-capture-initial string)
-                  (org-capture-mode-hook org-capture-mode-hook)
                   org-capture-entry)
               (when (and key (not (string-empty-p key)))
                 (setq org-capture-entry (org-capture-select-template key)))
